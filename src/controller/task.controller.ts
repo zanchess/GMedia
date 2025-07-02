@@ -1,27 +1,62 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
-import { TaskSchema, IdParamSchema, StatusQuerySchema } from '../schema/task.schema';
+import { TaskService } from '../services/task.service';
+import { Task, TaskStatus } from '../interface/task.interface';
+import {
+  TaskSchema,
+  IdParamSchema,
+  StatusQuerySchema,
+  UpdateTaskSchema,
+} from '../schema/task.schema';
+import { ErrorCode } from '../enum/error-code.enum';
 import { ControllerBase } from './baseController';
 
 class TaskController implements ControllerBase {
   async getTaskById(request: FastifyRequest, reply: FastifyReply) {
-
+    try {
+      const { id } = request.params as { id: string };
+      const task = await TaskService.getTaskById(id);
+      if (!task) return reply.code(ErrorCode.NOT_FOUND).send({ message: 'Task not found' });
+      reply.code(ErrorCode.SUCCESS).send(task);
+    } catch (e) {
+      reply.code(ErrorCode.INTERNAL_SERVER_ERROR).send({ message: 'Internal Server Error' });
+    }
   }
 
   async getTasks(request: FastifyRequest, reply: FastifyReply) {
-
+    try {
+      const { status } = request.query as { status?: TaskStatus };
+      const tasks = await TaskService.getTasks(status);
+      reply.code(ErrorCode.SUCCESS).send({ data: tasks });
+    } catch (e) {
+      reply.code(ErrorCode.INTERNAL_SERVER_ERROR).send({ message: 'Internal server error' });
+    }
   }
 
   async createTask(request: FastifyRequest, reply: FastifyReply) {
-
+    try {
+      const { title, description, status } = request.body as Omit<Task, 'id'>;
+      const task = await TaskService.createTask({ title, description, status });
+      reply.code(ErrorCode.CREATED).send(task);
+    } catch (e) {
+      reply.code(ErrorCode.INTERNAL_SERVER_ERROR).send({ message: 'Internal server error' });
+    }
   }
 
   async updateTask(request: FastifyRequest, reply: FastifyReply) {
-
+    try {
+      const { id } = request.params as { id: string };
+      const data = request.body as Partial<Omit<Task, 'id'>>;
+      const updatedTask = await TaskService.updateTask(id, data);
+      if (!updatedTask) return reply.code(ErrorCode.NOT_FOUND).send({ message: 'Task not found' });
+      reply.code(ErrorCode.SUCCESS).send(updatedTask);
+    } catch (e) {
+      reply.code(ErrorCode.INTERNAL_SERVER_ERROR).send({ message: 'Internal server error' });
+    }
   }
 
   async registerRoute(app: FastifyInstance) {
     app.get(
-      '/tasks/:id',
+      '/task/:id',
       {
         schema: {
           params: IdParamSchema,
@@ -41,7 +76,7 @@ class TaskController implements ControllerBase {
     );
 
     app.post(
-      '/tasks',
+      '/task',
       {
         schema: {
           body: TaskSchema,
@@ -51,11 +86,11 @@ class TaskController implements ControllerBase {
     );
 
     app.patch(
-      '/tasks/:id',
+      '/task/:id',
       {
         schema: {
           params: IdParamSchema,
-          body: TaskSchema,
+          body: UpdateTaskSchema,
         },
       },
       this.updateTask.bind(this),

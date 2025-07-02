@@ -9,12 +9,12 @@ export class MongoDBService {
 
   static async connect() {
     if (!this.client) {
-      this.client = new MongoClient(MONGO_URI);
-      await this.client.connect();
-      this.db = this.client.db(DB_NAME);
+      MongoDBService.client = new MongoClient(MONGO_URI);
+      await MongoDBService.client.connect();
+      this.db = MongoDBService.client.db(DB_NAME);
       console.log('Connected to MongoDB');
     }
-    return this.db;
+    return MongoDBService.db;
   }
 
   static getDb(): Db {
@@ -23,4 +23,4 @@ export class MongoDBService {
     }
     return this.db;
   }
-} 
+}
