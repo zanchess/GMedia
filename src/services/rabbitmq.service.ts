@@ -1,18 +1,17 @@
 import * as amqp from 'amqplib';
 import { RABBITMQ_VALUE } from '../enum/rabbitmq-value.enum';
+import { singleton } from 'tsyringe';
 
+@singleton()
 export class RabbitMQService {
-  private static connection: amqp.ChannelModel;
-  static channel: amqp.Channel;
+  private connection: amqp.ChannelModel | undefined;
+  private channel: amqp.Channel | undefined;
 
-  static async connect() {
+  async connect() {
     const RABBITMQ_URL = process.env.RABBITMQ_URL!;
-
-    if (!RabbitMQService.connection) {
-      RabbitMQService.connection = await amqp.connect(String(RABBITMQ_URL));
-
-      RabbitMQService.channel = await this.connection.createChannel();
-
+    if (!this.connection) {
+      this.connection = await amqp.connect(String(RABBITMQ_URL));
+      this.channel = await this.connection.createChannel();
       await this.channel.assertExchange(RABBITMQ_VALUE.TASK_EXCHANGE, 'direct', { durable: true });
       await this.channel.assertQueue(RABBITMQ_VALUE.TASK_QUEUE, { durable: true });
       await this.channel.bindQueue(
@@ -22,17 +21,17 @@ export class RabbitMQService {
       );
       console.log('Connected to RabbitMQ, exchange and queue are set up');
     }
-    return RabbitMQService.channel;
+    return this.channel;
   }
 
-  static async publishTaskAction(taskId: string, action: 'created' | 'updated') {
-    if (!RabbitMQService.channel) await this.connect();
+  async publishTaskAction(taskId: string, action: 'created' | 'updated') {
+    if (!this.channel) await this.connect();
     const msg = {
       taskId,
       action,
       timestamp: new Date().toISOString(),
     };
-    RabbitMQService.channel.publish(
+    this.channel!.publish(
       RABBITMQ_VALUE.TASK_EXCHANGE,
       RABBITMQ_VALUE.TASK_ROUTING_KEY,
       Buffer.from(JSON.stringify(msg)),

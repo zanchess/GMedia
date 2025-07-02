@@ -1,23 +1,26 @@
 import { MongoClient, Db } from 'mongodb';
+import { singleton } from 'tsyringe';
 
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://root:example@localhost:27017';
-const DB_NAME = process.env.MONGO_DB || 'test';
-
+@singleton()
 export class MongoDBService {
-  private static client: MongoClient;
-  private static db: Db;
+  private client: MongoClient | undefined;
+  private db: Db | undefined;
 
-  static async connect() {
+  async connect() {
+    const MONGO_URI = process.env.MONGO_URI;
+    const DB_NAME = process.env.MONGO_DB;
+    if (!MONGO_URI) throw new Error('MONGO_URI is not set in environment variables');
+    if (!DB_NAME) throw new Error('MONGO_DB is not set in environment variables');
     if (!this.client) {
-      MongoDBService.client = new MongoClient(MONGO_URI);
-      await MongoDBService.client.connect();
-      this.db = MongoDBService.client.db(DB_NAME);
+      this.client = new MongoClient(MONGO_URI);
+      await this.client.connect();
+      this.db = this.client.db(DB_NAME);
       console.log('Connected to MongoDB');
     }
-    return MongoDBService.db;
+    return this.db;
   }
 
-  static getDb(): Db {
+  getDb(): Db {
     if (!this.db) {
       throw new Error('MongoDB not connected. Call connect() first.');
     }

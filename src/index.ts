@@ -1,4 +1,6 @@
+import 'reflect-metadata';
 import Fastify from 'fastify';
+import { container } from 'tsyringe';
 import { MongoDBService } from './services/mongodb.service';
 import { taskController } from './controller/task.controller';
 import { RabbitMQService } from './services/rabbitmq.service';
@@ -10,9 +12,12 @@ const app = Fastify();
 dotenv.config();
 
 async function start() {
-  await MongoDBService.connect();
-  await RabbitMQService.connect();
-  await TaskConsumerService.consumeTaskActions();
+  const mongoDBService = container.resolve(MongoDBService);
+  const rabbitMQService = container.resolve(RabbitMQService);
+  const taskConsumerService = container.resolve(TaskConsumerService);
+  await mongoDBService.connect();
+  await rabbitMQService.connect();
+  await taskConsumerService.consumeTaskActions();
 
   const controllers: ControllerBase[] = [taskController];
   controllers.forEach((controller) => {
