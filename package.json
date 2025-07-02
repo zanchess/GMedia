@@ -1,0 +1,35 @@
+{
+  "name": "g.media_test",
+  "version": "1.0.0",
+  "description": "Fastify project test project",
+  "main": "src/index.ts",
+  "scripts": {
+    "dev": "ts-node-dev --respawn src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "codegen": "graphql-codegen --config codegen.yml",
+    "lint": "eslint . --ext .ts",
+    "format": "prettier --write ."
+  },
+  "dependencies": {
+    "@fastify/cors": "^7.0.0",
+    "@fastify/mongodb": "^9.0.2",
+    "@graphql-codegen/cli": "^3.0.0",
+    "amqplib": "^0.10.0",
+    "fastify": "^5.0.0",
+    "fastify-plugin": "^5.0.0",
+    "graphql": "^16.0.0"
+  },
+  "devDependencies": {
+    "@types/amqplib": "^0.10.7",
+    "@types/node": "^20.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.0.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "prettier": "^3.0.0",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.0.0"
+  }
+}
