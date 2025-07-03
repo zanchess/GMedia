@@ -1,6 +1,6 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import { TaskService } from '../services/task.service';
-import { Task, TaskStatus, UpdateTaskInput } from "../interface/task.interface";
+import { Task, TaskStatus, UpdateTaskInput } from '../interface/task.interface';
 import {
   TaskSchema,
   IdParamSchema,
