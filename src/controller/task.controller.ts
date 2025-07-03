@@ -1,6 +1,6 @@
 import { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import { TaskService } from '../services/task.service';
-import { Task, TaskStatus } from '../interface/task.interface';
+import { Task, TaskStatus, UpdateTaskInput } from "../interface/task.interface";
 import {
   TaskSchema,
   IdParamSchema,
@@ -50,7 +50,7 @@ class TaskController implements ControllerBase {
   async updateTask(request: FastifyRequest, reply: FastifyReply) {
     try {
       const { id } = request.params as { id: string };
-      const data = request.body as Partial<Omit<Task, 'id'>>;
+      const data = request.body as UpdateTaskInput;
       const updatedTask = await this.taskService.updateTask(id, data);
       if (!updatedTask) return reply.code(ErrorCode.NOT_FOUND).send({ message: 'Task not found' });
       reply.code(ErrorCode.SUCCESS).send(updatedTask);
