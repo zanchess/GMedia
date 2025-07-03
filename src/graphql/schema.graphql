@@ -1,0 +1,31 @@
+enum TaskStatus {
+  pending
+  in_progress
+  done
+}
+
+type Task {
+  id: ID!
+  title: String!
+  description: String
+  status: TaskStatus!
+}
+
+type Query {
+  task(id: ID!): Task
+  tasks(status: TaskStatus): [Task!]!
+}
+
+type Mutation {
+  createTask(
+    title: String!
+    description: String!
+    status: TaskStatus!
+  ): Task!
+  updateTask(
+    id: ID!
+    title: String
+    description: String
+    status: TaskStatus
+  ): Task
+}

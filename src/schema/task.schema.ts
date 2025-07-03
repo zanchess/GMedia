@@ -20,7 +20,7 @@ export const UpdateTaskSchema = {
 export const IdParamSchema = {
   type: 'object',
   properties: {
-    id: { type: 'string', minLength: 24, maxLength: 24 },
+    id: { type: 'string', minLength: 1 },
   },
   required: ['id'],
 };
