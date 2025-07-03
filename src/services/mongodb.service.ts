@@ -1,5 +1,6 @@
 import { MongoClient, Db } from 'mongodb';
 import { singleton } from 'tsyringe';
+import { logger } from '../logger';
 
 @singleton()
 export class MongoDBService {
@@ -15,7 +16,7 @@ export class MongoDBService {
       this.client = new MongoClient(MONGO_URI);
       await this.client.connect();
       this.db = this.client.db(DB_NAME);
-      console.log('Connected to MongoDB');
+      logger.info('Connected to MongoDB');
     }
     return this.db;
   }

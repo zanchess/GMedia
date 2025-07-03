@@ -1,6 +1,7 @@
 import { RabbitMQService } from './rabbitmq.service';
 import * as amqp from 'amqplib';
 import { injectable, inject } from 'tsyringe';
+import { logger } from '../logger';
 
 @injectable()
 export class TaskConsumerService {
@@ -13,7 +14,7 @@ export class TaskConsumerService {
       if (msg) {
         const content = msg.content.toString();
         const data = JSON.parse(content);
-        console.log(`Task ${data.taskId} was ${data.action} at ${data.timestamp}`);
+        logger.info(`Task ${data.taskId} was ${data.action} at ${data.timestamp}`);
         channel.ack(msg);
       }
     });

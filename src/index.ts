@@ -12,6 +12,7 @@ import fastifyApollo from '@as-integrations/fastify';
 import { readFileSync } from 'fs';
 import { resolvers } from './graphql/resolvers';
 import path from 'path';
+import { logger } from './logger';
 
 dotenv.config();
 const app = Fastify();
@@ -43,8 +44,8 @@ async function start() {
       app.log.error(err);
       process.exit(1);
     }
-    console.log(`Server listening at ${address}`);
-    console.log('GraphQL endpoint available at http://localhost:3000/graphql');
+    logger.info(`Server listening at ${address}`);
+    logger.info('GraphQL endpoint available at http://localhost:3000/graphql');
   });
 }
 

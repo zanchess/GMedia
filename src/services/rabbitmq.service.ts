@@ -1,6 +1,7 @@
 import * as amqp from 'amqplib';
 import { RABBITMQ_VALUE } from '../enum/rabbitmq-value.enum';
 import { singleton } from 'tsyringe';
+import { logger } from '../logger';
 
 @singleton()
 export class RabbitMQService {
@@ -19,7 +20,7 @@ export class RabbitMQService {
         RABBITMQ_VALUE.TASK_EXCHANGE,
         RABBITMQ_VALUE.TASK_ROUTING_KEY,
       );
-      console.log('Connected to RabbitMQ, exchange and queue are set up');
+      logger.info('Connected to RabbitMQ, exchange and queue are set up');
     }
     return this.channel;
   }
