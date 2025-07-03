@@ -23,6 +23,7 @@ npm run codegen
 ```
 
 ### Postman коллекции в папке `tests` или публичная коллекция [Ссылка на публичную коллекцию](https://www.postman.com/zanchessss/workspace/gmedia-test)
+(Если используете публичную коллекцию, чтобы все тесты прошли на локальном окружении, надо удалить в collection variable *current_task* и *currents_task_id* )
 
 # Архитектура сервиса
 
