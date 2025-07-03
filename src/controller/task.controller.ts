@@ -10,6 +10,7 @@ import {
 import { ErrorCode } from '../enum/error-code.enum';
 import { ControllerBase } from './baseController';
 import { injectable, inject, container } from 'tsyringe';
+import { sanitizeInputBody } from '../middleware/sanitizeInputBody';
 
 @injectable()
 class TaskController implements ControllerBase {
@@ -85,6 +86,7 @@ class TaskController implements ControllerBase {
         schema: {
           body: TaskSchema,
         },
+        preHandler: sanitizeInputBody,
       },
       this.createTask.bind(this),
     );
@@ -96,6 +98,7 @@ class TaskController implements ControllerBase {
           params: IdParamSchema,
           body: UpdateTaskSchema,
         },
+        preHandler: sanitizeInputBody,
       },
       this.updateTask.bind(this),
     );
