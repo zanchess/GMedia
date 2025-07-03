@@ -54,9 +54,8 @@ class TaskController implements ControllerBase {
   async createTask(request: FastifyRequest, reply: FastifyReply) {
     logger.info('Received createTask request', { body: request.body });
     try {
-      const { title, description, status } = request.body as Omit<Task, 'id'>;
-      const task = await this.taskService.createTask({ title, description, status });
-
+      const { title, description, dueDate, status } = request.body as Omit<Task, 'id'>;
+      const task = await this.taskService.createTask({ title, description, dueDate, status });
       logger.info(`Task created with id: ${task.id}`);
 
       reply.code(ErrorCode.CREATED).send(task);
@@ -71,7 +70,6 @@ class TaskController implements ControllerBase {
     try {
       const { id } = request.params as { id: string };
       const data = request.body as UpdateTaskInput;
-
       const updatedTask = await this.taskService.updateTask(id, data);
       if (!updatedTask) {
         logger.warn(`Task not found for update: ${id}`);

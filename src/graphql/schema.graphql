@@ -8,7 +8,8 @@ type Task {
   id: ID!
   title: String!
   description: String
-  status: TaskStatus!
+  dueDate: String!
+  status: TaskStatus
 }
 
 type Query {
@@ -19,8 +20,9 @@ type Query {
 type Mutation {
   createTask(
     title: String!
-    description: String!
-    status: TaskStatus!
+    description: String
+    dueDate: String!
+    status: TaskStatus
   ): Task!
   updateTask(
     id: ID!

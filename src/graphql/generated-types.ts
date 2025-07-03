@@ -24,8 +24,9 @@ export type Mutation = {
 
 
 export type MutationCreateTaskArgs = {
-  description: Scalars['String']['input'];
-  status: TaskStatus;
+  description?: InputMaybe<Scalars['String']['input']>;
+  dueDate: Scalars['String']['input'];
+  status?: InputMaybe<TaskStatus>;
   title: Scalars['String']['input'];
 };
 
@@ -56,8 +57,9 @@ export type QueryTasksArgs = {
 export type Task = {
   __typename?: 'Task';
   description?: Maybe<Scalars['String']['output']>;
+  dueDate: Scalars['String']['output'];
   id: Scalars['ID']['output'];
-  status: TaskStatus;
+  status?: Maybe<TaskStatus>;
   title: Scalars['String']['output'];
 };
 
@@ -158,7 +160,7 @@ export type ResolversParentTypes = {
 };
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
-  createTask?: Resolver<ResolversTypes['Task'], ParentType, ContextType, RequireFields<MutationCreateTaskArgs, 'description' | 'status' | 'title'>>;
+  createTask?: Resolver<ResolversTypes['Task'], ParentType, ContextType, RequireFields<MutationCreateTaskArgs, 'dueDate' | 'title'>>;
   updateTask?: Resolver<Maybe<ResolversTypes['Task']>, ParentType, ContextType, RequireFields<MutationUpdateTaskArgs, 'id'>>;
 };
 
@@ -169,8 +171,9 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
 
 export type TaskResolvers<ContextType = any, ParentType extends ResolversParentTypes['Task'] = ResolversParentTypes['Task']> = {
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  dueDate?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  status?: Resolver<ResolversTypes['TaskStatus'], ParentType, ContextType>;
+  status?: Resolver<Maybe<ResolversTypes['TaskStatus']>, ParentType, ContextType>;
   title?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
