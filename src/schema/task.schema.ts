@@ -2,8 +2,8 @@ export const TaskSchema = {
   type: 'object',
   required: ['title', 'status'],
   properties: {
-    title: { type: 'string' },
-    description: { type: 'string' },
+    title: { type: 'string', minLength: 1, maxLength: 100 },
+    description: { type: 'string', minLength: 1, maxLength: 500 },
     status: { type: 'string', enum: ['pending', 'in_progress', 'done'] },
   },
 };
@@ -11,8 +11,8 @@ export const TaskSchema = {
 export const UpdateTaskSchema = {
   type: 'object',
   properties: {
-    title: { type: 'string' },
-    description: { type: 'string' },
+    title: { type: 'string', minLength: 1, maxLength: 100 },
+    description: { type: 'string', minLength: 1, maxLength: 500 },
     status: { type: 'string', enum: ['pending', 'in_progress', 'done'] },
   },
 };
