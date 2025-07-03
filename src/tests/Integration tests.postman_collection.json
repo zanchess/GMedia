@@ -1,0 +1,1500 @@
+{
+	"info": {
+		"_postman_id": "4e47a629-71ca-4f5e-a597-4b38bce4b2e6",
+		"name": "Integration tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32143102",
+		"_collection_link": "https://www.postman.com/zanchessss/workspace/bf39c52a-f623-4b0f-aa3a-9baebb0a8012/collection/32143102-4e47a629-71ca-4f5e-a597-4b38bce4b2e6?action=share&source=collection_link&creator=32143102"
+	},
+	"item": [
+		{
+			"name": "REST API",
+			"item": [
+				{
+					"name": "Error cases",
+					"item": [
+						{
+							"name": "Get task by id - Not found",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response has 404 code\", () => pm.response.to.have.status(404));",
+											"pm.test(\"Response includes body\", () => pm.response.to.have.body);",
+											"",
+											"var responseJSON = pm.response.json();",
+											"pm.test(\"Response body structure is valid\", function () {",
+											"    pm.expect(responseJSON).to.have.property('message').that.is.an('string');",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/task/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"task",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "68654ff1ee49a2985f597c44"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get task by id - Path validation",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response has 400 code\", () => pm.response.to.have.status(400));",
+											"pm.test(\"Response includes body\", () => pm.response.to.have.body);",
+											"",
+											"var responseJSON = pm.response.json();",
+											"pm.test(\"Response body structure is valid\", function () {",
+											"    pm.expect(responseJSON).to.have.property('message').that.is.an('string');",
+											"    pm.expect(responseJSON).to.have.property('error').that.is.an('string');",
+											"    pm.expect(responseJSON).to.have.property('code').that.is.an('string');",
+											"    pm.expect(responseJSON).to.have.property('statusCode').that.is.an('number');",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/task/",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"task",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Task - Incorrect status",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response has 400 code\", () => pm.response.to.have.status(400));",
+											"pm.test(\"Response includes body\", () => pm.response.to.have.body);",
+											"",
+											"var responseJSON = pm.response.json();",
+											"pm.test(\"Response body structure is valid\", function () {",
+											"    pm.expect(responseJSON).to.have.property('message').that.is.an('string');",
+											"    pm.expect(responseJSON).to.have.property('error').that.is.an('string');",
+											"    pm.expect(responseJSON).to.have.property('code').that.is.an('string');",
+											"    pm.expect(responseJSON).to.have.property('statusCode').that.is.an('number');",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{{incorrect_task_status}}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/task/{{current_task_id}}",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"task",
+										"{{current_task_id}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "New Task - Not full body",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response has 400 code\", () => pm.response.to.have.status(400));",
+											"pm.test(\"Response includes body\", () => pm.response.to.have.body);",
+											"",
+											"var responseJSON = pm.response.json();",
+											"pm.test(\"Response body structure is valid\", function () {",
+											"    pm.expect(responseJSON).to.have.property('message').that.is.an('string');",
+											"    pm.expect(responseJSON).to.have.property('error').that.is.an('string');",
+											"    pm.expect(responseJSON).to.have.property('code').that.is.an('string');",
+											"    pm.expect(responseJSON).to.have.property('statusCode').that.is.an('number');",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{{not_full_task_body}}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/task",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"task"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "New Task - Long title",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response has 400 code\", () => pm.response.to.have.status(400));",
+											"pm.test(\"Response includes body\", () => pm.response.to.have.body);",
+											"",
+											"var responseJSON = pm.response.json();",
+											"pm.test(\"Response body structure is valid\", function () {",
+											"    pm.expect(responseJSON).to.have.property('message').that.is.an('string');",
+											"    pm.expect(responseJSON).to.have.property('error').that.is.an('string');",
+											"    pm.expect(responseJSON).to.have.property('code').that.is.an('string');",
+											"    pm.expect(responseJSON).to.have.property('statusCode').that.is.an('number');",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{{long_title_body}}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/task",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"task"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "New Task - Incorrect status",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response has 400 code\", () => pm.response.to.have.status(400));",
+											"pm.test(\"Response includes body\", () => pm.response.to.have.body);",
+											"",
+											"var responseJSON = pm.response.json();",
+											"pm.test(\"Response body structure is valid\", function () {",
+											"    pm.expect(responseJSON).to.have.property('message').that.is.an('string');",
+											"    pm.expect(responseJSON).to.have.property('error').that.is.an('string');",
+											"    pm.expect(responseJSON).to.have.property('code').that.is.an('string');",
+											"    pm.expect(responseJSON).to.have.property('statusCode').that.is.an('number');",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{{incorrect_task_status}}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/task",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"task"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Success cases",
+					"item": [
+						{
+							"name": "Get task list - Has base structure",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response has 200 code\", () => pm.response.to.have.status(200));",
+											"pm.test(\"Response includes body\", () => pm.response.to.have.body);",
+											"",
+											"var responseJSON = pm.response.json();",
+											"pm.test(\"Response body structure is valid\", function () {",
+											"    pm.expect(responseJSON).to.have.property('data').that.is.an('array');",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/tasks",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"tasks"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get task list - List with pending tasks",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"const currentTask = JSON.stringify(pm.collectionVariables.get(\"current_task\"));",
+											"",
+											"if(!currentTask){",
+											"    const reqBody = JSON.stringify(pm.collectionVariables.get(\"create_task_body\"));",
+											"    pm.sendRequest({",
+											"    url: `${pm.environment.get(\"baseUrl\")}/task`,",
+											"    method: \"POST\",",
+											"    header: {",
+											"        \"Content-Type\": \"application/json\"",
+											"    },",
+											"    body: {",
+											"        mode: \"raw\",",
+											"        raw: JSON.parse(reqBody)",
+											"    }",
+											"    }, function (err, response) {",
+											"        if (err) {",
+											"            console.error(\"Request failed:\", err);",
+											"        } else {",
+											"            const responseData = response.json();",
+											"            console.log(responseData);",
+											"            pm.collectionVariables.set(\"current_task\", JSON.stringify(responseData));",
+											"            pm.collectionVariables.set(\"current_task_id\", responseData.id);",
+											"        }",
+											"    });",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response has 200 code\", () => pm.response.to.have.status(200));",
+											"pm.test(\"Response includes body\", () => pm.response.to.have.body);",
+											"",
+											"var responseJSON = pm.response.json();",
+											"pm.test(\"Response body structure is valid\", function () {",
+											"    pm.expect(responseJSON).to.have.property('data').that.is.an('array');",
+											"});",
+											"pm.test(\"All tasks have status 'pending'\", function () {",
+											"    responseJSON.data.forEach(function(task) {",
+											"        pm.expect(task.status).to.eql(\"pending\");",
+											"    });",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/tasks?status=pending",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"tasks"
+									],
+									"query": [
+										{
+											"key": "status",
+											"value": "pending"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get task by id - Task founded",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response has 200 code\", () => pm.response.to.have.status(200));",
+											"pm.test(\"Response includes body\", () => pm.response.to.have.body);",
+											"",
+											"var responseJSON = pm.response.json();",
+											"pm.test(\"Response body structure is valid\", function () {",
+											"    pm.expect(responseJSON).to.have.property('title').that.is.an('string');",
+											"    pm.expect(responseJSON).to.have.property('description').that.is.an('string');",
+											"    pm.expect(responseJSON).to.have.property('status').that.is.an('string');",
+											"    pm.expect(responseJSON).to.have.property('id').that.is.an('string');",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"const currentTask = JSON.stringify(pm.collectionVariables.get(\"current_task\"));",
+											"console.log(currentTask);",
+											"",
+											"if(!currentTask){",
+											"    const reqBody = JSON.stringify(pm.collectionVariables.get(\"create_task_body\"));",
+											"    pm.sendRequest({",
+											"    url: `${pm.environment.get(\"baseUrl\")}/task`,",
+											"    method: \"POST\",",
+											"    header: {",
+											"        \"Content-Type\": \"application/json\"",
+											"    },",
+											"    body: {",
+											"        mode: \"raw\",",
+											"        raw: JSON.parse(reqBody)",
+											"    }",
+											"    }, function (err, response) {",
+											"        if (err) {",
+											"            console.error(\"Request failed:\", err);",
+											"        } else {",
+											"            const responseData = response.json();",
+											"            console.log(responseData);",
+											"            pm.collectionVariables.set(\"current_task\", JSON.stringify(responseData));",
+											"            pm.collectionVariables.set(\"current_task_id\", responseData.id);",
+											"        }",
+											"    });",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/task/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"task",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{current_task_id}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "New Task - Task was created",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response has 201 code\", () => pm.response.to.have.status(201));",
+											"pm.test(\"Response includes body\", () => pm.response.to.have.body);",
+											"",
+											"var responseJSON = pm.response.json();",
+											"pm.test(\"Response body structure is valid\", function () {",
+											"    pm.expect(responseJSON).to.have.property('title').that.is.an('string');",
+											"    pm.expect(responseJSON).to.have.property('description').that.is.an('string');",
+											"    pm.expect(responseJSON).to.have.property('status').that.is.an('string');",
+											"    pm.expect(responseJSON).to.have.property('id').that.is.an('string');",
+											"});",
+											"",
+											"pm.test(\"Response fields match expected values\", function () {",
+											"    const expectedTitle = pm.collectionVariables.get(\"task_title\");",
+											"    const expectedDescription = pm.collectionVariables.get(\"task_description\");",
+											"    const expectedStatus = pm.collectionVariables.get(\"task_status_pending\");",
+											"    console.log(expectedTitle, expectedDescription, expectedStatus);",
+											"",
+											"    pm.expect(responseJSON.title).to.equal(expectedTitle);",
+											"    pm.expect(responseJSON.description).to.equal(expectedDescription);",
+											"    pm.expect(responseJSON.status).to.equal(expectedStatus);",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"title\": \"title\",\n    \"description\": \"Task Description\",\n    \"status\": \"pending\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/task",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"task"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Task - Task was updated",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"const currentTask = JSON.stringify(pm.collectionVariables.get(\"current_task\"));",
+											"",
+											"if(!currentTask){",
+											"    const reqBody = JSON.stringify(pm.collectionVariables.get(\"create_task_body\"));",
+											"    pm.sendRequest({",
+											"    url: `${pm.environment.get(\"baseUrl\")}/task`,",
+											"    method: \"POST\",",
+											"    header: {",
+											"        \"Content-Type\": \"application/json\"",
+											"    },",
+											"    body: {",
+											"        mode: \"raw\",",
+											"        raw: JSON.parse(reqBody)",
+											"    }",
+											"    }, function (err, response) {",
+											"        if (err) {",
+											"            console.error(\"Request failed:\", err);",
+											"        } else {",
+											"            const responseData = response.json();",
+											"            console.log(responseData);",
+											"            pm.collectionVariables.set(\"current_task\", JSON.stringify(responseData));",
+											"            pm.collectionVariables.set(\"current_task_id\", responseData.id);",
+											"        }",
+											"    });",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response has 200 code\", () => pm.response.to.have.status(200));",
+											"pm.test(\"Response includes body\", () => pm.response.to.have.body);",
+											"",
+											"var responseJSON = pm.response.json();",
+											"pm.test(\"Response body structure is valid\", function () {",
+											"    pm.expect(responseJSON).to.have.property('title').that.is.an('string');",
+											"    pm.expect(responseJSON).to.have.property('description').that.is.an('string');",
+											"    pm.expect(responseJSON).to.have.property('status').that.is.an('string');",
+											"    pm.expect(responseJSON).to.have.property('id').that.is.an('string');",
+											"});",
+											"",
+											"pm.test(\"Response fields match expected values\", function () {",
+											"    const expectedTitle = pm.collectionVariables.get(\"title_updated\");",
+											"    const expectedDescription = pm.collectionVariables.get(\"description_updated\");",
+											"    const expectedStatus = pm.collectionVariables.get(\"updated_status\");",
+											"",
+											"    pm.expect(responseJSON.title).to.equal(expectedTitle);",
+											"    pm.expect(responseJSON.description).to.equal(expectedDescription);",
+											"    pm.expect(responseJSON.status).to.equal(expectedStatus);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{{update_task_body}}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/task/:id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"task",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "{{current_task_id}}"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "GraphQL",
+			"item": [
+				{
+					"name": "Success cases",
+					"item": [
+						{
+							"name": "Query - Task by id",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"const currentTask = JSON.stringify(pm.collectionVariables.get(\"current_task\"));",
+											"",
+											"if(!currentTask){",
+											"    const reqBody = JSON.stringify(pm.collectionVariables.get(\"create_task_body\"));",
+											"    pm.sendRequest({",
+											"    url: `${pm.environment.get(\"baseUrl\")}/task`,",
+											"    method: \"POST\",",
+											"    header: {",
+											"        \"Content-Type\": \"application/json\"",
+											"    },",
+											"    body: {",
+											"        mode: \"raw\",",
+											"        raw: JSON.parse(reqBody)",
+											"    }",
+											"    }, function (err, response) {",
+											"        if (err) {",
+											"            console.error(\"Request failed:\", err);",
+											"        } else {",
+											"            const responseData = response.json();",
+											"            console.log(responseData);",
+											"            pm.collectionVariables.set(\"current_task\", JSON.stringify(responseData));",
+											"            pm.collectionVariables.set(\"current_task_id\", responseData.id);",
+											"        }",
+											"    });",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response has 200 code\", () => {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"pm.test(\"Response includes body\", () => {",
+											"    pm.response.to.have.body;",
+											"});",
+											"",
+											"var responseJSON = pm.response.json();",
+											"pm.test(\"Response body structure is valid\", function () {",
+											"    pm.expect(responseJSON).to.have.property('data');",
+											"    pm.expect(responseJSON.data).to.have.property('task');",
+											"});",
+											"",
+											"pm.test(\"Task has status 'done'\", function () {",
+											"    pm.expect(responseJSON.data.task).to.have.property('status').that.is.an('string');",
+											"    pm.expect(responseJSON.data.task).to.have.property('title').that.is.an('string');",
+											"    pm.expect(responseJSON.data.task).to.have.property('description').that.is.an('string');",
+											"    pm.expect(responseJSON.data.task).to.have.property('status').that.is.an('string');",
+											"    pm.expect(responseJSON.data.task).to.have.property('id').that.is.an('string');",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "graphql",
+									"graphql": {
+										"query": "query GetTaskByIdWithVariables($taskId: ID!) {\n  task(id: $taskId) {\n    id\n    title\n    description\n    status\n  }\n}",
+										"variables": "{\n  \"taskId\": \"{{current_task_id}}\"\n}"
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/graphql",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"graphql"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Query - Task list",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response has 200 code\", () => pm.response.to.have.status(200));",
+											"pm.test(\"Response includes body\", () => pm.response.to.have.body);",
+											"",
+											"var responseJSON = pm.response.json();",
+											"pm.test(\"Response body structure is valid\", function () {",
+											"    pm.expect(responseJSON.data).to.have.property('tasks').that.is.an('array');",
+											"});",
+											"pm.test(\"All tasks have status 'pending'\", function () {",
+											"    responseJSON.data.tasks.forEach(function(task) {",
+											"        pm.expect(task.status).to.eql(\"pending\");",
+											"    });",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "graphql",
+									"graphql": {
+										"query": "query GetTasksByStatusWithVariables($status: TaskStatus) {\n  tasks(status: $status) {\n    id\n    title\n    description\n    status\n  }\n}",
+										"variables": "{\n  \"status\": \"pending\"\n}"
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/graphql",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"graphql"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Mutation - Create task",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response has 200 code\", () => pm.response.to.have.status(200));",
+											"pm.test(\"Response includes body\", () => pm.response.to.have.body);",
+											"",
+											"var responseJSON = pm.response.json();",
+											"pm.test(\"Response body structure is valid\", function () {",
+											"    pm.expect(responseJSON.data.createTask).to.have.property('title').that.is.an('string');",
+											"    pm.expect(responseJSON.data.createTask).to.have.property('description').that.is.an('string');",
+											"    pm.expect(responseJSON.data.createTask).to.have.property('status').that.is.an('string');",
+											"    pm.expect(responseJSON.data.createTask).to.have.property('id').that.is.an('string');",
+											"});",
+											"",
+											"pm.test(\"Response fields match expected values\", function () {",
+											"    const expectedTitle = pm.collectionVariables.get(\"task_title\");",
+											"    const expectedDescription = pm.collectionVariables.get(\"task_description\");",
+											"    const expectedStatus = pm.collectionVariables.get(\"task_status_pending\");",
+											"",
+											"    pm.expect(responseJSON.data.createTask.title).to.equal(expectedTitle);",
+											"    pm.expect(responseJSON.data.createTask.description).to.equal(expectedDescription);",
+											"    pm.expect(responseJSON.data.createTask.status).to.equal(expectedStatus);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "graphql",
+									"graphql": {
+										"query": "mutation CreateTaskWithVariables(\n  $title: String!\n  $description: String!\n  $status: TaskStatus!\n) {\n  createTask(\n    title: $title\n    description: $description\n    status: $status\n  ) {\n    id\n    title\n    description\n    status\n  }\n}",
+										"variables": "{{create_task_body}}"
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/graphql",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"graphql"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Mutation - Update task",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response has 200 code\", () => {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test(\"Response includes body\", () => {",
+											"    pm.response.to.have.body;",
+											"});",
+											"",
+											"const responseJSON = pm.response.json();",
+											"",
+											"pm.test(\"Response includes updateTask\", () => {",
+											"    pm.expect(responseJSON.data).to.have.property('updateTask');",
+											"});",
+											"",
+											"pm.test(\"Response body structure is valid\", function () {",
+											"    const task = responseJSON.data.updateTask;",
+											"    pm.expect(task).to.have.property('title').that.is.a('string');",
+											"    pm.expect(task).to.have.property('description').that.is.a('string');",
+											"    pm.expect(task).to.have.property('status').that.is.a('string');",
+											"    pm.expect(task).to.have.property('id').that.is.a('string');",
+											"});",
+											"",
+											"pm.test(\"Response fields match expected values\", function () {",
+											"    const expectedTitle = pm.collectionVariables.get(\"title_updated\");",
+											"    const expectedDescription = pm.collectionVariables.get(\"description_updated\");",
+											"    const expectedStatus = pm.collectionVariables.get(\"updated_status\");",
+											"",
+											"    const task = responseJSON.data.updateTask;",
+											"",
+											"    pm.expect(task.title).to.equal(expectedTitle);",
+											"    pm.expect(task.description).to.equal(expectedDescription);",
+											"    pm.expect(task.status).to.equal(expectedStatus);",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"const currentTask = JSON.stringify(pm.collectionVariables.get(\"current_task\"));",
+											"",
+											"if(!currentTask){",
+											"    const reqBody = JSON.stringify(pm.collectionVariables.get(\"create_task_body\"));",
+											"    pm.sendRequest({",
+											"    url: `${pm.environment.get(\"baseUrl\")}/task`,",
+											"    method: \"POST\",",
+											"    header: {",
+											"        \"Content-Type\": \"application/json\"",
+											"    },",
+											"    body: {",
+											"        mode: \"raw\",",
+											"        raw: JSON.parse(reqBody)",
+											"    }",
+											"    }, function (err, response) {",
+											"        if (err) {",
+											"            console.error(\"Request failed:\", err);",
+											"        } else {",
+											"            const responseData = response.json();",
+											"            console.log(responseData);",
+											"            pm.collectionVariables.set(\"current_task\", JSON.stringify(responseData));",
+											"            pm.collectionVariables.set(\"current_task_id\", responseData.id);",
+											"        }",
+											"    });",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "graphql",
+									"graphql": {
+										"query": "mutation UpdateTaskWithVariables(\n  $id: ID!\n  $title: String\n  $description: String\n  $status: TaskStatus\n) {\n  updateTask(\n    id: $id\n    title: $title\n    description: $description\n    status: $status\n  ) {\n    id\n    title\n    description\n    status\n  }\n}",
+										"variables": "{\n  \"id\": \"{{current_task_id}}\",\n  \"title\": \"{{title_updated}}\",\n  \"description\": \"{{description_updated}}\",\n  \"status\": \"{{updated_status}}\"\n}"
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/graphql",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"graphql"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Error Cases",
+					"item": [
+						{
+							"name": "Query - Task Not found",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"const currentTask = JSON.stringify(pm.collectionVariables.get(\"current_task\"));",
+											"",
+											"if(!currentTask){",
+											"    const reqBody = JSON.stringify(pm.collectionVariables.get(\"create_task_body\"));",
+											"    pm.sendRequest({",
+											"    url: `${pm.environment.get(\"baseUrl\")}/task`,",
+											"    method: \"POST\",",
+											"    header: {",
+											"        \"Content-Type\": \"application/json\"",
+											"    },",
+											"    body: {",
+											"        mode: \"raw\",",
+											"        raw: JSON.parse(reqBody)",
+											"    }",
+											"    }, function (err, response) {",
+											"        if (err) {",
+											"            console.error(\"Request failed:\", err);",
+											"        } else {",
+											"            const responseData = response.json();",
+											"            console.log(responseData);",
+											"            pm.collectionVariables.set(\"current_task\", JSON.stringify(responseData));",
+											"            pm.collectionVariables.set(\"current_task_id\", responseData.id);",
+											"        }",
+											"    });",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response has 200 code\", () => {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"pm.test(\"Response includes body\", () => {",
+											"    pm.response.to.have.body;",
+											"});",
+											"",
+											"var responseJSON = pm.response.json();",
+											"pm.test(\"Response body structure is valid\", function () {",
+											"    pm.expect(responseJSON).to.have.property('data');",
+											"    pm.expect(responseJSON.data).to.have.property('task');",
+											"});",
+											"",
+											"pm.test(\"Task has status 'done'\", function () {",
+											"    pm.expect(responseJSON.data.task).to.eql(null);",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "graphql",
+									"graphql": {
+										"query": "query GetTaskByIdWithVariables($taskId: ID!) {\n  task(id: $taskId) {\n    id\n    title\n    description\n    status\n  }\n}",
+										"variables": "{\n  \"taskId\": \"68654ff1ee49a2985f597c44\"\n}"
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/graphql",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"graphql"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Mutation Create - Not full body",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response has 200 code\", () => pm.response.to.have.status(200));",
+											"pm.test(\"Response includes body\", () => pm.response.to.have.body);",
+											"",
+											"var responseJSON = pm.response.json();",
+											"pm.test(\"Response fields match expected values\", function () {",
+											"    pm.expect(responseJSON).to.have.property('errors');",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "graphql",
+									"graphql": {
+										"query": "mutation CreateTaskWithVariables(\n  $title: String!\n  $description: String!\n  $status: TaskStatus!\n) {\n  createTask(\n    title: $title\n    description: $description\n    status: $status\n  ) {\n    id\n    title\n    description\n    status\n  }\n}",
+										"variables": "{{not_full_task_body}}"
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/graphql",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"graphql"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Mutation Create - Long value",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response has 200 code\", () => pm.response.to.have.status(200));",
+											"pm.test(\"Response includes body\", () => pm.response.to.have.body);",
+											"",
+											"var responseJSON = pm.response.json();",
+											"pm.test(\"Response fields match expected values\", function () {",
+											"    pm.expect(responseJSON).to.have.property('errors');",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "graphql",
+									"graphql": {
+										"query": "mutation CreateTaskWithVariables(\n  $title: String!\n  $description: String!\n  $status: TaskStatus!\n) {\n  createTask(\n    title: $title\n    description: $description\n    status: $status\n  ) {\n    id\n    title\n    description\n    status\n  }\n}",
+										"variables": "{{long_title_body}}"
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/graphql",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"graphql"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Mutation Update - Invalid status",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response has 200 code\", () => pm.response.to.have.status(200));",
+											"pm.test(\"Response includes body\", () => pm.response.to.have.body);",
+											"",
+											"var responseJSON = pm.response.json();",
+											"pm.test(\"Response fields match expected values\", function () {",
+											"    pm.expect(responseJSON).to.have.property('errors');",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"const currentTask = JSON.stringify(pm.collectionVariables.get(\"current_task\"));",
+											"",
+											"if(!currentTask){",
+											"    const reqBody = JSON.stringify(pm.collectionVariables.get(\"create_task_body\"));",
+											"    pm.sendRequest({",
+											"    url: `${pm.environment.get(\"baseUrl\")}/task`,",
+											"    method: \"POST\",",
+											"    header: {",
+											"        \"Content-Type\": \"application/json\"",
+											"    },",
+											"    body: {",
+											"        mode: \"raw\",",
+											"        raw: JSON.parse(reqBody)",
+											"    }",
+											"    }, function (err, response) {",
+											"        if (err) {",
+											"            console.error(\"Request failed:\", err);",
+											"        } else {",
+											"            const responseData = response.json();",
+											"            console.log(responseData);",
+											"            pm.collectionVariables.set(\"current_task\", JSON.stringify(responseData));",
+											"            pm.collectionVariables.set(\"current_task_id\", responseData.id);",
+											"        }",
+											"    });",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "graphql",
+									"graphql": {
+										"query": "mutation UpdateTaskWithVariables(\n  $id: ID!\n  $title: String\n  $description: String\n  $status: TaskStatus\n) {\n  updateTask(\n    id: $id\n    title: $title\n    description: $description\n    status: $status\n  ) {\n    id\n    title\n    description\n    status\n  }\n}",
+										"variables": "{{incorrect_task_status}}"
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/graphql",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"graphql"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Query List - Invalid status",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response has 200 code\", () => pm.response.to.have.status(200));",
+											"pm.test(\"Response includes body\", () => pm.response.to.have.body);",
+											"",
+											"var responseJSON = pm.response.json();",
+											"pm.test(\"Response fields match expected values\", function () {",
+											"    pm.expect(responseJSON).to.have.property('errors');",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "graphql",
+									"graphql": {
+										"query": "query GetTasksByStatusWithVariables($status: TaskStatus) {\n  tasks(status: $status) {\n    id\n    title\n    description\n    status\n  }\n}",
+										"variables": "{\n  \"status\": \"pending2\"\n}"
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/graphql",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"graphql"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Query List - Invalid status",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response has 200 code\", () => pm.response.to.have.status(200));",
+											"pm.test(\"Response includes body\", () => pm.response.to.have.body);",
+											"",
+											"var responseJSON = pm.response.json();",
+											"pm.test(\"Response fields match expected values\", function () {",
+											"    pm.expect(responseJSON).to.have.property('errors');",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "graphql",
+									"graphql": {
+										"query": "query GetTasksByStatusWithVariables($status: TaskStatus) {\n  tasks(status: $status) {\n    id\n    title\n    description\n    status\n  }\n}",
+										"variables": "{\n  \"status\": \"pending2\"\n}"
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/graphql",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"graphql"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "task_title",
+			"value": "title",
+			"type": "string"
+		},
+		{
+			"key": "title_updated",
+			"value": "title_updated",
+			"type": "string"
+		},
+		{
+			"key": "not_full_task_body",
+			"value": "{\n\n  \"description\": \"Task Description\",\n  \"status\": \"pending\"\n}",
+			"type": "string"
+		},
+		{
+			"key": "description_updated",
+			"value": "Task_updated",
+			"type": "string"
+		},
+		{
+			"key": "updated_status",
+			"value": "in_progress",
+			"type": "string"
+		},
+		{
+			"key": "task_description",
+			"value": "Task Description",
+			"type": "string"
+		},
+		{
+			"key": "task_status_pending",
+			"value": "pending",
+			"type": "string"
+		},
+		{
+			"key": "create_task_body",
+			"value": "{\n  \"title\": \"title\",\n  \"description\": \"Task Description\",\n  \"status\": \"pending\"\n}",
+			"type": "string"
+		},
+		{
+			"key": "incorrect_task_status",
+			"value": "{\n  \"title\": \"title\",\n  \"description\": \"Task Description\",\n  \"status\": \"pending1\"\n}",
+			"type": "string"
+		},
+		{
+			"key": "update_task_body",
+			"value": "{\n  \"title\": \"title_updated\",\n  \"description\": \"Task_updated\",\n  \"status\": \"in_progress\"\n}",
+			"type": "string"
+		},
+		{
+			"key": "long_title_body",
+			"value": "{\n  \"title\": \"titledlksfklsdnvlkfnblndfvnflnbfdnvndb;ldfvkdnbdsvklnfbl;ndbl;ndbndfs;bndfbnfl;dsbndfnbfdnbdsnfb;kfbndnbflnbfdljbnfdsjbjflbdflkjbnsdljnfbdnjbnsljbjfnbjsdnblsdnbsdfbnldsbndslbnsdlnblkdsfnbjsdflnbldfsnblfdsbnfbdfsnbnjdbjdsbdlsnbjdfjblnbjnfdnbnjbnnbjnlfdsnbfldksnbflsnbjfklsnbljfdnbjlfdnbldjnbdlbdjbnj\",\n  \"description\": \"Task Description\",\n  \"status\": \"pending\"\n}",
+			"type": "string"
+		},
+		{
+			"key": "current_task",
+			"value": ""
+		},
+		{
+			"key": "current_task_id",
+			"value": ""
+		}
+	]
+}

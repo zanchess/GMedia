@@ -38,6 +38,16 @@ export const resolvers: Resolvers = {
       _,
       { title, description, status }: MutationCreateTaskArgs,
     ): Promise<GQLTask> => {
+      if (title.length < 1 || title.length > 100) {
+        throw new Error('Title must be 1..100 characters long');
+      }
+      if (description.length < 1 || description.length > 500) {
+        throw new Error('Description must be 1..100 characters long');
+      }
+      if (!['pending', 'in_progress', 'done'].includes(status)) {
+        throw new Error('Invalid status value');
+      }
+
       return mapTaskToGQL(
         await taskService.createTask({
           title,
@@ -47,6 +57,16 @@ export const resolvers: Resolvers = {
       );
     },
     updateTask: async (_, { id, title, description, status }: MutationUpdateTaskArgs) => {
+      if (typeof title === 'string' && (title.length < 1 || title.length > 100)) {
+        throw new Error('Title must be 1..100 characters long');
+      }
+      if (typeof description === 'string' && (description.length < 1 || description.length > 500)) {
+        throw new Error('Description must be 1..100 characters long');
+      }
+      if (status && !['pending', 'in_progress', 'done'].includes(status)) {
+        throw new Error('Invalid status value');
+      }
+
       const taskToUpdate: Partial<Omit<Task, 'id'>> = {
         ...(title !== undefined && title !== null && { title }),
         ...(description !== undefined && description !== null && { description }),
