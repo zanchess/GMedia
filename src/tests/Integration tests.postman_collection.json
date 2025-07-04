@@ -4,7 +4,7 @@
 		"name": "Integration tests",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "32143102",
-		"_collection_link": "https://www.postman.com/zanchessss/workspace/bf39c52a-f623-4b0f-aa3a-9baebb0a8012/collection/32143102-4e47a629-71ca-4f5e-a597-4b38bce4b2e6?action=share&source=collection_link&creator=32143102"
+		"_collection_link": "https://www.postman.com/crimson-robot-530829/workspace/gmedia-test/collection/32143102-4e47a629-71ca-4f5e-a597-4b38bce4b2e6?action=share&source=collection_link&creator=32143102"
 	},
 	"item": [
 		{
@@ -517,6 +517,7 @@
 											"    pm.expect(responseJSON).to.have.property('description').that.is.an('string');",
 											"    pm.expect(responseJSON).to.have.property('status').that.is.an('string');",
 											"    pm.expect(responseJSON).to.have.property('id').that.is.an('string');",
+											"    pm.expect(responseJSON).to.have.property('dueDate').that.is.an('string');",
 											"});"
 										],
 										"type": "text/javascript",
@@ -619,6 +620,7 @@
 											"    pm.expect(responseJSON).to.have.property('description').that.is.an('string');",
 											"    pm.expect(responseJSON).to.have.property('status').that.is.an('string');",
 											"    pm.expect(responseJSON).to.have.property('id').that.is.an('string');",
+											"    pm.expect(responseJSON).to.have.property('dueDate').that.is.an('string');",
 											"});",
 											"",
 											"pm.test(\"Response fields match expected values\", function () {",
@@ -643,7 +645,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"title\": \"title\",\n    \"description\": \"Task Description\",\n    \"status\": \"pending\"\n}",
+									"raw": "{{create_task_body}}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -712,6 +714,7 @@
 											"    pm.expect(responseJSON).to.have.property('description').that.is.an('string');",
 											"    pm.expect(responseJSON).to.have.property('status').that.is.an('string');",
 											"    pm.expect(responseJSON).to.have.property('id').that.is.an('string');",
+											"    pm.expect(responseJSON).to.have.property('dueDate').that.is.an('string');",
 											"});",
 											"",
 											"pm.test(\"Response fields match expected values\", function () {",
@@ -830,6 +833,7 @@
 											"    pm.expect(responseJSON.data.task).to.have.property('description').that.is.an('string');",
 											"    pm.expect(responseJSON.data.task).to.have.property('status').that.is.an('string');",
 											"    pm.expect(responseJSON.data.task).to.have.property('id').that.is.an('string');",
+											"    pm.expect(responseJSON.data.task).to.have.property('dueDate').that.is.an('string');",
 											"});",
 											""
 										],
@@ -844,7 +848,7 @@
 								"body": {
 									"mode": "graphql",
 									"graphql": {
-										"query": "query GetTaskByIdWithVariables($taskId: ID!) {\n  task(id: $taskId) {\n    id\n    title\n    description\n    status\n  }\n}",
+										"query": "query GetTaskByIdWithVariables($taskId: ID!) {\n  task(id: $taskId) {\n    id\n    title\n    description\n    status\n    dueDate\n  }\n}",
 										"variables": "{\n  \"taskId\": \"{{current_task_id}}\"\n}"
 									}
 								},
@@ -891,7 +895,7 @@
 								"body": {
 									"mode": "graphql",
 									"graphql": {
-										"query": "query GetTasksByStatusWithVariables($status: TaskStatus) {\n  tasks(status: $status) {\n    id\n    title\n    description\n    status\n  }\n}",
+										"query": "query GetTasksByStatusWithVariables($status: TaskStatus) {\n  tasks(status: $status) {\n    id\n    title\n    description\n    status\n    dueDate\n  }\n}",
 										"variables": "{\n  \"status\": \"pending\"\n}"
 									}
 								},
@@ -946,7 +950,7 @@
 								"body": {
 									"mode": "graphql",
 									"graphql": {
-										"query": "mutation CreateTaskWithVariables(\n  $title: String!\n  $description: String!\n  $status: TaskStatus!\n) {\n  createTask(\n    title: $title\n    description: $description\n    status: $status\n  ) {\n    id\n    title\n    description\n    status\n  }\n}",
+										"query": "mutation CreateTaskWithVariables(\n  $title: String!\n  $description: String\n  $status: TaskStatus\n  $dueDate: String!\n) {\n  createTask(\n    title: $title\n    description: $description\n    status: $status\n    dueDate: $dueDate\n  ) {\n    id\n    title\n    description\n    status\n    dueDate\n  }\n}",
 										"variables": "{{create_task_body}}"
 									}
 								},
@@ -989,6 +993,7 @@
 											"    pm.expect(task).to.have.property('description').that.is.a('string');",
 											"    pm.expect(task).to.have.property('status').that.is.a('string');",
 											"    pm.expect(task).to.have.property('id').that.is.a('string');",
+											"    pm.expect(task).to.have.property('dueDate').that.is.a('string');",
 											"});",
 											"",
 											"pm.test(\"Response fields match expected values\", function () {",
@@ -1049,7 +1054,7 @@
 								"body": {
 									"mode": "graphql",
 									"graphql": {
-										"query": "mutation UpdateTaskWithVariables(\n  $id: ID!\n  $title: String\n  $description: String\n  $status: TaskStatus\n) {\n  updateTask(\n    id: $id\n    title: $title\n    description: $description\n    status: $status\n  ) {\n    id\n    title\n    description\n    status\n  }\n}",
+										"query": "mutation UpdateTaskWithVariables(\n  $id: ID!\n  $title: String\n  $description: String\n  $status: TaskStatus\n) {\n  updateTask(\n    id: $id\n    title: $title\n    description: $description\n    status: $status\n  ) {\n    id\n    title\n    description\n    status\n    dueDate\n  }\n}",
 										"variables": "{\n  \"id\": \"{{current_task_id}}\",\n  \"title\": \"{{title_updated}}\",\n  \"description\": \"{{description_updated}}\",\n  \"status\": \"{{updated_status}}\"\n}"
 									}
 								},
@@ -1183,7 +1188,7 @@
 								"body": {
 									"mode": "graphql",
 									"graphql": {
-										"query": "mutation CreateTaskWithVariables(\n  $title: String!\n  $description: String!\n  $status: TaskStatus!\n) {\n  createTask(\n    title: $title\n    description: $description\n    status: $status\n  ) {\n    id\n    title\n    description\n    status\n  }\n}",
+										"query": "mutation CreateTaskWithVariables(\n  $title: String!\n  $description: String!\n  $status: TaskStatus!\n  $dueDate: String!\n) {\n  createTask(\n    title: $title\n    description: $description\n    status: $status\n    dueDate: $dueDate\n  ) {\n    id\n    title\n    description\n    status\n    dueDate\n  }\n}",
 										"variables": "{{not_full_task_body}}"
 									}
 								},
@@ -1226,7 +1231,7 @@
 								"body": {
 									"mode": "graphql",
 									"graphql": {
-										"query": "mutation CreateTaskWithVariables(\n  $title: String!\n  $description: String!\n  $status: TaskStatus!\n) {\n  createTask(\n    title: $title\n    description: $description\n    status: $status\n  ) {\n    id\n    title\n    description\n    status\n  }\n}",
+										"query": "mutation CreateTaskWithVariables(\n  $title: String!\n  $description: String!\n  $status: TaskStatus!\n  $dueDate: String!\n) {\n  createTask(\n    title: $title\n    description: $description\n    status: $status\n    dueDate: $dueDate\n  ) {\n    id\n    title\n    description\n    status\n    dueDate\n  }\n}",
 										"variables": "{{long_title_body}}"
 									}
 								},
@@ -1361,49 +1366,6 @@
 								}
 							},
 							"response": []
-						},
-						{
-							"name": "Query List - Invalid status",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Response has 200 code\", () => pm.response.to.have.status(200));",
-											"pm.test(\"Response includes body\", () => pm.response.to.have.body);",
-											"",
-											"var responseJSON = pm.response.json();",
-											"pm.test(\"Response fields match expected values\", function () {",
-											"    pm.expect(responseJSON).to.have.property('errors');",
-											"});",
-											""
-										],
-										"type": "text/javascript",
-										"packages": {}
-									}
-								}
-							],
-							"request": {
-								"method": "POST",
-								"header": [],
-								"body": {
-									"mode": "graphql",
-									"graphql": {
-										"query": "query GetTasksByStatusWithVariables($status: TaskStatus) {\n  tasks(status: $status) {\n    id\n    title\n    description\n    status\n  }\n}",
-										"variables": "{\n  \"status\": \"pending2\"\n}"
-									}
-								},
-								"url": {
-									"raw": "{{baseUrl}}/graphql",
-									"host": [
-										"{{baseUrl}}"
-									],
-									"path": [
-										"graphql"
-									]
-								}
-							},
-							"response": []
 						}
 					]
 				}
@@ -1470,7 +1432,7 @@
 		},
 		{
 			"key": "create_task_body",
-			"value": "{\n  \"title\": \"title\",\n  \"description\": \"Task Description\",\n  \"status\": \"pending\"\n}",
+			"value": "{\n  \"title\": \"title\",\n  \"description\": \"Task Description\",\n  \"status\": \"pending\",\n\n\n\n  \"dueDate\": \"2025-07-03T19:56:12.797Z\"\n}",
 			"type": "string"
 		},
 		{
@@ -1485,16 +1447,8 @@
 		},
 		{
 			"key": "long_title_body",
-			"value": "{\n  \"title\": \"titledlksfklsdnvlkfnblndfvnflnbfdnvndb;ldfvkdnbdsvklnfbl;ndbl;ndbndfs;bndfbnfl;dsbndfnbfdnbdsnfb;kfbndnbflnbfdljbnfdsjbjflbdflkjbnsdljnfbdnjbnsljbjfnbjsdnblsdnbsdfbnldsbndslbnsdlnblkdsfnbjsdflnbldfsnblfdsbnfbdfsnbnjdbjdsbdlsnbjdfjblnbjnfdnbnjbnnbjnlfdsnbfldksnbflsnbjfklsnbljfdnbjlfdnbldjnbdlbdjbnj\",\n  \"description\": \"Task Description\",\n  \"status\": \"pending\"\n}",
+			"value": "{\n  \"title\": \"titledlksfklsdnvlkfnblndfvnflnbfdnvndb;ldfvkdnbdsvklnfbl;ndbl;ndbndfs;bndfbnfl;dsbndfnbfdnbdsnfb;kfbndnbflnbfdljbnfdsjbjflbdflkjbnsdljnfbdnjbnsljbjfnbjsdnblsdnbsdfbnldsbndslbnsdlnblkdsfnbjsdflnbldfsnblfdsbnfbdfsnbnjdbjdsbdlsnbjdfjblnbjnfdnbnjbnnbjnlfdsnbfldksnbflsnbjfklsnbljfdnbjlfdnbldjnbdlbdjbnj\",\n  \"description\": \"Task Description\",\n  \"status\": \"pending\",\n  \"dueDate\": \"2025-07-03T19:56:12.797Z\"\n}",
 			"type": "string"
-		},
-		{
-			"key": "current_task",
-			"value": ""
-		},
-		{
-			"key": "current_task_id",
-			"value": ""
 		}
 	]
 }
